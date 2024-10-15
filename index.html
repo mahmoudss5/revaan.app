@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lumen/Watt Calculator</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #121212; /* Dark background */
+        color: #e0e0e0; /* Light text color */
+        margin: 0;
+        padding: 20px;
+    }
+    .container {
+        background-color: #1e1e1e; /* Darker container */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.5); /* Darker shadow */
+        width: 100%;
+        max-width: 400px; /* Max width to control the container size */
+        margin: 20px auto; /* Center the container */
+    }
+    .form-group {
+        margin-top: 15px;
+    }
+    label {
+        display: block;
+        margin-bottom: 5px;
+        color: #e0e0e0; /* Light text color */
+    }
+    .inline-label {
+        display: inline-block;
+        margin-right: 10px;
+        color: #e0e0e0; /* Light text color */
+    }
+    input[type="text"], select {
+        width: 100%;
+        padding: 8px;
+        background-color: #333333; /* Dark input fields */
+        color: #ffffff; /* Light text color */
+        border: 1px solid #555555; /* Darker border */
+        box-sizing: border-box;
+    }
+    input[type="radio"] {
+        margin-right: 5px;
+    }
+    button {
+        padding: 10px;
+        background-color: #007BFF; /* Same color for button */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        margin-top: 20px;
+        width: 100%;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #0056b3; /* Darker hover effect */
+    }
+
+    /* Responsive design for small screens */
+    @media (max-width: 600px) {
+        .container {
+            padding: 15px;
+        }
+        input[type="text"], select, button {
+            font-size: 14px; /* Adjust font size for small screens */
+        }
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h2>Lumen/Watt Calculator</h2>
+    <form id="lumenForm">
+        <div class="form-group">
+            <label for="roomType">Select Room Type</label>
+            <select id="roomType">
+                <option value="bedroom">Bedroom</option>
+                <option value="kitchen">Kitchen</option>
+                <option value="livingRoom">Living Room</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Measurement Unit</label>
+            <label class="inline-label"><input type="radio" id="feet" name="measurement" value="feet">Feet</label>
+            <label class="inline-label"><input type="radio" id="inches" name="measurement" value="inches">Inches</label>
+            <label class="inline-label"><input type="radio" id="meters" name="measurement" value="meters" checked>Meters</label>
+        </div>
+
+        <div class="form-group">
+            <label for="width">Width</label>
+            <input type="text" id="width" placeholder="Enter width">
+        </div>
+
+        <div class="form-group">
+            <label for="length">Length</label>
+            <input type="text" id="length" placeholder="Enter length">
+        </div>
+
+        <div class="form-group">
+            <label>Lighting Intensity</label>
+            <label class="inline-label"><input type="radio" id="low" name="intensity" value="low">Low</label>
+            <label class="inline-label"><input type="radio" id="medium" name="intensity" value="medium" checked>Medium</label>
+            <label class="inline-label"><input type="radio" id="high" name="intensity" value="high">High</label>
+        </div>
+
+        <div class="form-group">
+            <label>Wall Color</label>
+            <label class="inline-label"><input type="radio" id="light" name="color" value="light" checked>Light</label>
+            <label class="inline-label"><input type="radio" id="dark" name="color" value="dark">Dark</label>
+        </div>
+
+        <div class="form-group">
+            <label>Light Placement</label>
+            <label class="inline-label"><input type="radio" id="center" name="placement" value="center" checked>Center</label>
+            <label class="inline-label"><input type="radio" id="corners" name="placement" value="corners">Corners</label>
+        </div>
+
+        <button type="button" onclick="storeDataAndNavigate()">Calculate Luminance</button>
+    </form>
+</div>
+
+<script>
+function storeDataAndNavigate() {
+    var roomType = document.getElementById('roomType').value;
+    var measurement = document.querySelector('input[name="measurement"]:checked').value;
+    var width = document.getElementById('width').value;
+    var length = document.getElementById('length').value;
+    var intensity = document.querySelector('input[name="intensity"]:checked').value;
+    var color = document.querySelector('input[name="color"]:checked').value;
+    var placement = document.querySelector('input[name="placement"]:checked').value;
+
+    // Form validation
+    if (!width || isNaN(width) || width <= 0) {
+        alert('Please enter a valid width.');
+        return;
+    }
+
+    if (!length || isNaN(length) || length <= 0) {
+        alert('Please enter a valid length.');
+        return;
+    }
+
+    localStorage.setItem('roomType', roomType);
+    localStorage.setItem('measurement', measurement);
+    localStorage.setItem('width', width);
+    localStorage.setItem('length', length);
+    localStorage.setItem('intensity', intensity);
+    localStorage.setItem('color', color);
+    localStorage.setItem('placement', placement);
+
+    // Navigate to the second page
+    location.href = 'results.html';
+}
+</script>
+</body>
+</html>

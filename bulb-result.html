@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Number of Bulbs Required</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #121212; /* Dark background */
+        color: #e0e0e0; /* Light text color */
+        margin: 0;
+        padding: 20px;
+    }
+    .container {
+        background-color: #1e1e1e; /* Darker container */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.5); /* Darker shadow */
+        width: 350px;
+        margin: auto;
+    }
+    p {
+        margin: 15px 0;
+        font-size: 16px;
+        color: #e0e0e0; /* Light text color */
+    }
+    h2 {
+        text-align: center;
+        color: #ffffff; /* White text for header */
+    }
+    button {
+        padding: 10px;
+        background-color: #007BFF; /* Same color for button */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        margin-top: 20px;
+        width: 100%;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
+    #imageContainer {
+        text-align: center;
+        margin-top: 20px;
+    }
+    img {
+        width: 100%;
+        max-width: 300px;
+        display: none;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h2>Number of Bulbs Required</h2>
+    <p id="bulbResultText">Calculating...</p>
+    <button onclick="goBack()">Back to Calculator</button>
+    <button onclick="imagineRoom()">Imagine the Room</button>
+    <div id="imageContainer">
+        <img id="bulbImage" src="" alt="Room Image">
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var numBulbs = localStorage.getItem('numBulbs');
+    document.getElementById('bulbResultText').textContent = 'You will need approximately ' + numBulbs + ' bulbs.';
+});
+
+function goBack() {
+    location.href = 'index.html'; // Assuming "index.html" is the main page with the calculator
+}
+
+function imagineRoom() {
+    var numBulbs = parseInt(localStorage.getItem('numBulbs'));
+    var imageElement = document.getElementById('bulbImage');
+    var bulbResultText = document.getElementById('bulbResultText');
+    
+    // Check if numBulbs is valid
+    if (numBulbs < 2 || numBulbs > 8) {
+        bulbResultText.textContent = 'The number of bulbs is invalid. Please Check the inputs to get a number between 2 and 8.';
+        imageElement.style.display = 'none'; // Hide the image if the number is invalid
+    } else {
+        // Display different images based on the number of bulbs
+        if (numBulbs === 2) {
+            imageElement.src = '2.jpg'; // Replace with actual image URL or path
+        } else if (numBulbs === 3) {
+            imageElement.src = '3.jpg'; // Replace with actual image URL or path
+        } else if (numBulbs === 4) {
+            imageElement.src = '4.jpg'; // Replace with actual image URL or path
+        } else if (numBulbs === 5) {
+            imageElement.src = '5.jpg'; // Replace with actual image URL or path
+        } else if (numBulbs === 6) {
+            imageElement.src = '6.jpg'; // Replace with actual image URL or path
+        } else if (numBulbs === 7) {
+            imageElement.src = '7.jpg'; // Replace with actual image URL or path
+        } else if (numBulbs === 8) {
+            imageElement.src = '8.jpg'; // Replace with actual image URL or path
+        }
+
+        imageElement.style.display = 'block'; // Show the image
+    }
+}
+</script>
+</body>
+</html>

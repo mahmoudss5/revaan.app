@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Room Needed Luminance Results</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #121212; /* Dark background */
+        color: #e0e0e0; /* Light text color */
+        margin: 0;
+        padding: 20px;
+    }
+    .container {
+        background-color: #1e1e1e; /* Darker container */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.5); /* Darker shadow */
+        width: 100%; /* Full width */
+        max-width: 400px; /* Max width for larger screens */
+        margin: 20px auto; /* Center the container */
+    }
+    p {
+        margin: 15px 0;
+        font-size: 16px;
+        color: #e0e0e0; /* Light text color */
+    }
+    h2 {
+        text-align: center;
+        color: #ffffff; /* White text for header */
+    }
+    button {
+        padding: 10px;
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        margin-top: 20px;
+        width: 100%;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
+    input {
+        width: 100%;
+        padding: 10px;
+        margin-top: 15px;
+        border-radius: 5px;
+        background-color: #333333; /* Dark input fields */
+        color: #ffffff; /* Light text color */
+        border: 1px solid #555555; /* Darker border */
+        font-size: 16px;
+    }
+
+    /* Media query for small screens */
+    @media (max-width: 600px) {
+        .container {
+            padding: 15px;
+        }
+        button, input {
+            font-size: 14px;
+        }
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h2>Calculated Luminance Results</h2>
+    <p id="resultText">Calculating...</p>
+
+    <label for="bulbLuminance">Enter the luminance of the bulb (in lumens):</label>
+    <input type="number" id="bulbLuminance" placeholder="Enter lumens of one bulb">
+    
+    <button onclick="calculateBulbs()">Calculate Number of Bulbs</button>
+    <button onclick="goBack()">Back</button>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var width = parseFloat(localStorage.getItem('width'));
+    var length = parseFloat(localStorage.getItem('length'));
+    var intensity = localStorage.getItem('intensity');
+    var measurement = localStorage.getItem('measurement');
+    var roomType = localStorage.getItem('roomType');
+    var color = localStorage.getItem('color');
+    var placement = localStorage.getItem('placement');
+
+    // Convert measurements if necessary
+    if (measurement === 'feet') {
+        width *= 0.3048; // Convert feet to meters
+        length *= 0.3048;
+    } else if (measurement === 'inches') {
+        width *= 0.0254; // Convert inches to meters
+        length *= 0.0254;
+    }
+
+    // Calculate area
+    var area = width * length; // in square meters
+
+    // Determine luminance per square meter based on intensity
+    var luminancePerSqM;
+    if (intensity === 'high') {
+        luminancePerSqM = 150;
+    } else if (intensity === 'medium') {
+        luminancePerSqM = 100;
+    } else {
+        luminancePerSqM = 50;
+    }
+
+    // Adjust luminance based on wall color
+    if (color === 'dark') {
+        luminancePerSqM *= 1.2; // Increase luminance by 20% for dark walls
+    }
+
+    // Adjust luminance based on light placement
+    if (placement === 'corners') {
+        luminancePerSqM *= 1.1; // Increase luminance by 10% for corner placement
+    }
+
+    // Adjust luminance based on room type
+    if (roomType === 'kitchen') {
+        luminancePerSqM *= 1.5; // Kitchens generally require more light
+    } else if (roomType === 'bedroom') {
+        luminancePerSqM *= 0.8; // Bedrooms may require less light
+    }
+
+    // Total required luminance
+    var totalLuminance = area * luminancePerSqM;
+
+    // Round to the nearest whole number
+    totalLuminance = Math.round(totalLuminance);
+
+    document.getElementById('resultText').textContent = 'The required luminance for your room is ' + totalLuminance + ' lumens.';
+    localStorage.setItem('totalLuminance', totalLuminance); // Save total luminance to localStorage
+});
+
+function calculateBulbs() {
+    var bulbLuminance = parseFloat(document.getElementById('bulbLuminance').value);
+    var totalLuminance = parseFloat(localStorage.getItem('totalLuminance'));
+
+    if (!bulbLuminance || bulbLuminance <= 0) {
+        alert('Please enter a valid bulb luminance.');
+        return;
+    }
+
+    // Calculate number of bulbs required and round up
+    var numBulbs = Math.ceil(totalLuminance / bulbLuminance);
+
+    // Save to localStorage and redirect to new page
+    localStorage.setItem('numBulbs', numBulbs);
+    window.location.href = 'bulb-result.html';
+}
+
+function goBack() {
+    window.history.back();
+}
+</script>
+</body>
+</html>
